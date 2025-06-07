@@ -1,41 +1,39 @@
 # プロトタイプ開発環境
 
-このリポジトリは、迅速なプロトタイプ開発をサポートする環境です。LLMを活用して効率的にNext.jsアプリケーションを構築し、Cloudflareにデプロイできます。
+このリポジトリは、迅速なプロトタイプ開発をサポートする環境です。LLMを活用して効率的にNext.jsアプリケーションを構築し、GitHub ActionsでCloudflareに自動デプロイできます。
 
 ## 📋 技術スタック
 
-- **フレームワーク**: Next.js 14+ (Pages Router)
+- **フレームワーク**: Next.js 15+ (Pages Router)
 - **言語**: TypeScript
 - **UI**: React 19+、TailwindCSS
 - **リンター/フォーマッター**: Biome
+- **Git フック**: Husky (pre-commit)
+- **CI/CD**: GitHub Actions
 - **デプロイ**: Cloudflare Pages (OpenNext使用)
 
 ## 🚀 クイックスタート
 
-### 1. プロジェクト作成
+### 1. リポジトリのセットアップ
 ```bash
-# このテンプレートを使用
 git clone <このリポジトリ>
 cd prototyping-base
 npm install
 ```
 
-### 2. 環境変数設定
-```bash
-cp .env.example .env.local
-# .env.localを編集して必要な値を設定
-```
-
-### 3. 開発サーバー起動
+### 2. 開発サーバー起動
 ```bash
 npm run dev
 ```
 
-### 4. コード品質チェック
+### 3. 利用可能なコマンド
 ```bash
+npm run dev         # 開発サーバー起動
+npm run build       # 本番ビルド
 npm run lint        # コードの品質チェック
 npm run format      # コードの自動フォーマット
 npm run type-check  # TypeScript型チェック
+npm run cf-typegen  # Cloudflare型定義生成
 ```
 
 ## 📁 ディレクトリ構成
@@ -55,6 +53,27 @@ npm run type-check  # TypeScript型チェック
 └── CLAUDE.md       # LLM開発ルール
 ```
 
+## 🔄 自動化された開発ワークフロー
+
+### Git フック（Husky）
+コミット前に以下が自動実行されます：
+- **cf-typegen**: Cloudflare型定義の生成
+- **format**: コードの自動フォーマット
+- **lint**: コード品質チェック
+
+### GitHub Actions CI/CD
+プッシュ/PR作成時に以下が自動実行されます：
+
+#### Pull Request
+- 依存関係インストール
+- 型定義生成、型チェック、Lint
+- ビルド
+- **プレビューデプロイ** (Cloudflare Pages)
+
+#### main ブランチ
+- 上記に加えて
+- **本番デプロイ** (Cloudflare Pages)
+
 ## 🎯 開発ワークフロー
 
 ### Phase 1: 要件整理
@@ -62,55 +81,46 @@ npm run type-check  # TypeScript型チェック
 2. ターゲットユーザーの特定
 3. 必要なデータの種類の検討
 
-### Phase 2: UI設計・実装
+### Phase 2: 開発環境セットアップ
+1. リポジトリをフォーク/クローン
+2. Cloudflare Secretsを設定（デプロイ用）
+3. ローカル開発開始
+
+### Phase 3: UI設計・実装
 1. ワイヤーフレーム作成（v0.dev、Claude Artifacts推奨）
 2. コンポーネント分割・実装
 3. TailwindCSSでスタイリング
 4. レスポンシブ対応
 
-### Phase 3: 機能実装
+### Phase 4: 機能実装
 1. Pages Routerでルーティング設定
 2. 必要に応じてAPI Routes作成
 3. 状態管理（useState、useContext）
 4. データ取得・表示ロジック実装
 
-### Phase 4: デプロイ
-1. ビルド・テスト実行
-2. Cloudflareへデプロイ
+### Phase 5: デプロイ
+1. PRを作成してプレビューデプロイを確認
+2. mainブランチにマージして本番デプロイ
 
-## ☁️ Cloudflareデプロイ
+## ☁️ Cloudflareデプロイ設定
 
-### 前提条件
-- Cloudflareアカウント
-- Wrangler CLI設定済み
+### 初回セットアップ
+1. **GitHub Secrets設定**（リポジトリ設定で追加）
+   - `CLOUDFLARE_API_TOKEN`: CloudflareのAPIトークン
+   - `CLOUDFLARE_ACCOUNT_ID`: CloudflareのAccount ID
 
-### デプロイ手順
+2. **APIトークンの生成**
+   - Cloudflareダッシュボード > My Profile > API Tokens
+   - 必要な権限: `Cloudflare Workers:Edit`, `Account:Read`, `Zone:Read`
 
-#### 初回セットアップ
+3. **自動デプロイ**
+   - PRを作成 → プレビューデプロイ
+   - mainにマージ → 本番デプロイ
+
+### 手動デプロイ（必要時）
 ```bash
-# Wranglerでログイン
-npx wrangler login
-
-# Cloudflare Pagesプロジェクト作成
-npx wrangler pages project create my-app
-```
-
-#### デプロイ実行
-```bash
-# ビルド＆デプロイ
-npm run deploy
-
-# またはステップごとに実行
-npm run pages:build  # OpenNextでビルド
-npm run preview      # ローカルでプレビュー
-npx wrangler pages deploy  # 本番デプロイ
-```
-
-### 環境変数設定（Cloudflare）
-```bash
-# Cloudflareダッシュボードまたはwranglerで設定
-npx wrangler pages secret put NEXT_PUBLIC_APP_NAME
-npx wrangler pages secret put DATABASE_URL
+npm run preview  # プレビューデプロイ
+npm run deploy   # 本番デプロイ（Wrangler設定済みの場合）
 ```
 
 ## 🗄️ データベース選択指針
@@ -209,16 +219,28 @@ export const Card = ({ title, children }) => (
 #### 型エラーが発生する
 ```bash
 npm run type-check  # 詳細な型エラーを確認
+npm run cf-typegen  # Cloudflare型定義を再生成
 ```
 
 #### TailwindCSSが適用されない
 1. `tailwind.config.js`のcontent設定を確認
 2. CSSファイルでTailwindディレクティブを確認
 
-#### デプロイエラー
-1. ビルドが成功するか確認: `npm run build`
-2. 環境変数の設定を確認
-3. OpenNextの設定を確認
+#### GitHub Actionsでデプロイが失敗する
+1. Repository SecretsでCloudflare認証情報を確認
+2. GitHub Actionsのログでエラー詳細を確認
+3. ローカルでビルドが成功するか確認: `npm run build`
+
+#### pre-commitフックでエラーが発生する
+```bash
+# Huskyが正しくインストールされているか確認
+npx husky --version
+
+# フックを手動実行してテスト
+npm run cf-typegen
+npm run format
+npm run lint
+```
 
 #### ローカル開発でエラー
 ```bash
@@ -229,15 +251,34 @@ npm install
 # キャッシュクリア
 rm -rf .next
 npm run dev
+
+# Huskyフックを再インストール
+npx husky install
+```
+
+#### Cloudflare型定義エラー
+```bash
+# wrangler.tomlが存在することを確認
+# APIトークンが正しく設定されていることを確認
+npm run cf-typegen
 ```
 
 ## 📚 参考リンク
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [OpenNext Documentation](https://opennext.js.org/)
+### フレームワーク・ライブラリ
+- [Next.js Documentation](https://nextjs.org/docs) - Pages Router
+- [React 19 Documentation](https://react.dev/)
 - [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [Biome Documentation](https://biomejs.dev/)
+
+### 開発ツール
+- [Biome Documentation](https://biomejs.dev/) - Lint & Format
+- [Husky Documentation](https://typicode.github.io/husky/) - Git Hooks
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+### デプロイ・インフラ
+- [Cloudflare Pages](https://developers.cloudflare.com/pages/)
+- [OpenNext Documentation](https://opennext.js.org/) - Next.js on Cloudflare
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
 
 ## 🤝 貢献
 
