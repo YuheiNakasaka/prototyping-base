@@ -1,0 +1,38 @@
+{
+  "name": "prototyping-base",
+  "version": "0.1.0",
+  "private": true,
+  "description": "プロトタイプ開発環境",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --apply .",
+    "format": "biome format --write .",
+    "type-check": "tsc --noEmit",
+    "pages:build": "npx @opennextjs/cloudflare",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.0",
+    "@opennextjs/cloudflare": "^1.2.1",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.0",
+    "wrangler": "^3.60.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}
