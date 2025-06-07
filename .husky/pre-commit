@@ -1,1 +1,3 @@
 npm run cf-typegen
+npm run format
+npm run lint
