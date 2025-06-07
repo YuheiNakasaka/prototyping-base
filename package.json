@@ -11,9 +11,9 @@
     "lint:fix": "biome lint --apply .",
     "format": "biome format --write .",
     "type-check": "tsc --noEmit",
-    "pages:build": "npx @opennextjs/cloudflare",
-    "preview": "npm run pages:build && wrangler pages dev",
-    "deploy": "npm run pages:build && wrangler pages deploy"
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "next": "^15.3.3",
