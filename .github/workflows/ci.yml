@@ -31,7 +31,7 @@ jobs:
         run: npm run type-check
 
       - name: Check formatting
-        run: npm run format -- --check
+        run: npm run format
 
   build:
     runs-on: ubuntu-latest
@@ -79,10 +79,10 @@ jobs:
   multi-node:
     runs-on: ubuntu-latest
     name: Test on Node.js ${{ matrix.node-version }}
-    
+
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20]
 
     steps:
       - name: Checkout

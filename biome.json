@@ -47,6 +47,16 @@
   },
   "files": {
     "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx", "**/*.json"],
-    "ignore": ["node_modules/**", ".next/**", "dist/**", "build/**", "*.min.js", "*.d.ts"]
+    "ignore": [
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+      "build/**",
+      "*.min.js",
+      "*.d.ts",
+      ".open-next/**",
+      "cloudflare-env.d.ts",
+      ".vscode/**"
+    ]
   }
 }
