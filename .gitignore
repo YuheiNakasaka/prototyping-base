@@ -36,7 +36,6 @@ next-env.d.ts
 
 # Cloudflare
 .wrangler
-wrangler.toml
 
 # Database
 *.db

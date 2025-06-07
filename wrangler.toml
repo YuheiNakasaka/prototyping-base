@@ -1,0 +1,35 @@
+main = ".open-next/worker.js"
+name = "prototyping-base"
+compatibility_date = "2025-03-25"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[env.development]
+vars = { NODE_ENV = "development" }
+
+[env.production]
+vars = { NODE_ENV = "production" }
+
+# Environment variables (必要に応じて設定)
+# [vars]
+# NEXT_PUBLIC_APP_NAME = "プロトタイプアプリ"
+# NEXT_PUBLIC_APP_VERSION = "0.1.0"
+
+# D1 Database bindings (必要に応じて有効化)
+# [[env.production.d1_databases]]
+# binding = "DB"
+# database_name = "prototyping-db"
+# database_id = "your-database-id"
+
+# KV namespace bindings (必要に応じて有効化)
+# [[env.production.kv_namespaces]]
+# binding = "KV"
+# id = "your-kv-namespace-id"
+
+# R2 bucket bindings (必要に応じて有効化)
+# [[env.production.r2_buckets]]
+# binding = "R2"
+# bucket_name = "prototyping-bucket"

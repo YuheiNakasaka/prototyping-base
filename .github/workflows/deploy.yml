@@ -1,9 +1,7 @@
-name: Deploy to Cloudflare
+name: CI/CD
 
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
 
 jobs:
@@ -37,15 +35,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to Cloudflare (Preview)
-        if: github.event_name == 'pull_request'
-        run: npm run preview
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
       - name: Deploy to Cloudflare (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: npm run deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
