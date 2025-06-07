@@ -12,10 +12,11 @@
 ### 技術スタック
 - **言語**: TypeScript
 - **フロントエンド**: React 19+、TailwindCSS
-- **フレームワーク**: Next.js 14+ (Pages Routerのみ)
+- **フレームワーク**: Next.js 15+ (Pages Routerのみ)
 - **バックエンド**: Node.js
 - **DB**: Cloudflare D1（必要に応じて）
 - **デプロイ**: Cloudflare Workers/Pages
+- **Code Quality**: Biome (lint/format)、Husky (pre-commit)
 
 ## コーディングルール
 
@@ -151,19 +152,24 @@ npm run deploy
 ```bash
 npm run dev        # 開発サーバー起動
 npm run build      # ビルド実行
-npm run lint       # コード品質チェック
+npm run lint       # Biomeでコード品質チェック
+npm run lint:fix   # Biomeで自動修正
+npm run format     # Biomeでコードフォーマット
 npm run type-check # 型チェック実行
+npm run preview    # Cloudflareでローカルプレビュー
+npm run deploy     # Cloudflareにデプロイ
 ```
 
 ## AI活用のコツ
 
 ### プロンプト例
 ```
-「Next.js 14のPages Routerを使用して、[機能名]を実装してください。
+「Next.js 15のPages Routerを使用して、[機能名]を実装してください。
 - TypeScriptを使用
 - TailwindCSSでスタイリング
 - 日本語でコメント記述
-- レスポンシブデザイン対応」
+- レスポンシブデザイン対応
+- Biomeでコード品質チェック」
 ```
 
 ### コード生成後のチェックポイント
@@ -171,3 +177,5 @@ npm run type-check # 型チェック実行
 - [ ] 日本語コメントが適切に記述されているか
 - [ ] TailwindCSSクラスが正しく適用されているか
 - [ ] エラーハンドリングが実装されているか
+- [ ] Biomeでlint/formatが通るか
+- [ ] `npm run type-check`でエラーがないか
