@@ -46,7 +46,7 @@
     }
   },
   "files": {
-    "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"],
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.jsx", "**/*.json"],
     "ignore": [
       "node_modules/**",
       ".next/**",

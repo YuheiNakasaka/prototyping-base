@@ -42,14 +42,15 @@ npm run type-check  # TypeScript型チェック
 
 ```
 /
-├── pages/           # Next.js Pages Router
-│   ├── api/         # API Routes
-│   ├── _app.tsx     # アプリ全体の設定
-│   └── index.tsx    # ホームページ
-├── components/      # 再利用可能なUIコンポーネント
-├── lib/            # ユーティリティ関数・共通ロジック
-├── styles/         # グローバルCSS・TailwindCSS
-├── types/          # TypeScript型定義
+├── src/
+│   ├── pages/       # Next.js Pages Router
+│   │   ├── api/     # API Routes
+│   │   ├── _app.tsx # アプリ全体の設定
+│   │   └── index.tsx # ホームページ
+│   ├── components/  # 再利用可能なUIコンポーネント
+│   ├── lib/        # ユーティリティ関数・共通ロジック
+│   ├── styles/     # グローバルCSS・TailwindCSS
+│   └── types/      # TypeScript型定義
 ├── public/         # 静的ファイル
 └── CLAUDE.md       # LLM開発ルール
 ```
