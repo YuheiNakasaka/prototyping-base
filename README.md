@@ -14,10 +14,7 @@
 
 ### 1. プロジェクト作成
 ```bash
-# 新しいNext.jsプロジェクトを作成（Cloudflare推奨方法）
-npm create cloudflare@latest -- my-app --framework=next
-
-# または、このテンプレートを使用
+# このテンプレートを使用
 git clone <このリポジトリ>
 cd prototyping-base
 npm install
